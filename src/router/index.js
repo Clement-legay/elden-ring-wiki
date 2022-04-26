@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import homeView from "@/views/HomeView";
+import content from "@/components/Content";
 
 Vue.use(VueRouter)
 
@@ -10,6 +11,12 @@ const routes = [
     name: 'home',
     component: homeView
   },
+  {
+    path: '/content',
+    name: 'content',
+    props: true,
+    component: content
+  }
 ]
 
 const router = new VueRouter({
