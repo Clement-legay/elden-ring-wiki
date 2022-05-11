@@ -438,6 +438,32 @@ INSERT INTO `talismans` VALUES (1,'Raises attack power of arrows and bolts','/im
 UNLOCK TABLES;
 
 --
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `email` varchar(500) NOT NULL,
+  `password` varchar(500) NOT NULL,
+  `admin` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (3,'clem.lgy76@gmail.com','$2b$10$H.27tInZJOP3Sv791WJgTukZwFzaD7Bhsqdg/uxaLaB2NU2IwCF1G',0),(5,'test@test.fr','$2b$10$.D.qmwFFmZ1q6PrDXIjHgOOhFi5GV5lk4kgG1l2xfdCsuRb/vQtlS',0),(6,'blabla@bla.fr','$2b$10$1Bu7wpUjcuRGSavc5h5fE.PHLd/AUctp4youXyxVmxYBQkbIIvn7K',0);
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `weapons`
 --
 
@@ -478,4 +504,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-10 11:34:05
+-- Dump completed on 2022-05-11 18:50:49
