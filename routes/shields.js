@@ -17,6 +17,11 @@ app.get('/api/shields/get', async (req,res) => {
     res.json(data)
 })
 
+app.get('/api/shields/get/:name', async (req,res) => {
+    const result = await sqlQuery.sqlQuery(`SELECT * FROM shields WHERE name = '${req.params.name.replaceAll('+', ' ').replaceAll("'", "\\'")}'`)
+    res.json(result[0])
+})
+
 app.post('/api/shields/add', async (req,res) => {
     console.log('oui')
     let selected = req.body

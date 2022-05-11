@@ -17,6 +17,11 @@ app.get('/api/ashesWar/get', async (req,res) => {
     res.json(data)
 })
 
+app.get('/api/ashesWar/get/:name', async (req,res) => {
+    const result = await sqlQuery.sqlQuery(`SELECT * FROM asheswar WHERE name = '${req.params.name.replaceAll('+', ' ').replaceAll("'", "\\'")}'`)
+    res.json(result[0])
+})
+
 app.post('/api/ashesWar/add', async (req,res) => {
     console.log('oui')
     let selected = req.body

@@ -17,6 +17,11 @@ app.get('/api/bosses/get', async (req,res) => {
     res.json(data)
 })
 
+app.get('/api/bosses/get/:name', async (req,res) => {
+    const result = await sqlQuery.sqlQuery(`SELECT * FROM bosses WHERE name = '${req.params.name.replaceAll('+', ' ').replaceAll("'", "\\'")}'`)
+    res.json(result[0])
+})
+
 app.post('/api/bosses/add', async (req,res) => {
     let selected = req.body
     const result = await sqlQuery.sqlQuery("INSERT INTO `bosses` (`id`, `img`, `desc`, `healthPoints`, `location`, `name`, `drops`, `type`, `region`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?)",[selected.image, selected.description, JSON.stringify(selected.healthPoints), selected.location, selected.name, JSON.stringify(selected.drops), selected.type, selected.region])

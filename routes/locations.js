@@ -17,6 +17,11 @@ app.get('/api/locations/get', async (req,res) => {
     res.json(data)
 })
 
+app.get('/api/locations/get/:name', async (req,res) => {
+    const result = await sqlQuery.sqlQuery(`SELECT * FROM locations WHERE name = '${req.params.name.replaceAll('+', ' ').replaceAll("'", "\\'")}'`)
+    res.json(result[0])
+})
+
 app.post('/api/locations/add', async (req,res) => {
     let selected = req.body
 

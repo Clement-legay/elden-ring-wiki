@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const query = require('./sqlQuerry');
+const fs = require("fs");
 
 corsOptions = {
   origin: 'http://localhost:8080',
@@ -34,9 +35,17 @@ require('./routes/bosses')
 require('./routes/locations')
 require('./routes/regions')
 require('./routes/full_set')
+require('./routes/user')
+
 
 app.get('/images/:file/:image', (req, res) => {
-  res.sendFile(`${__dirname}/images/${req.params.file}/${req.params.image}`);
+    let path = `${__dirname}/images/${req.params.file}/${req.params.image}`
+    if (fs.existsSync(path)) {
+        res.sendFile(path);
+    }
+    else {
+        res.sendFile(`${__dirname}/images/default.png`);
+    }
 })
 
 app.listen(3000)

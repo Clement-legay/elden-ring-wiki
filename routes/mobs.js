@@ -17,6 +17,11 @@ app.get('/api/mobs/get', async (req,res) => {
     res.json(data)
 })
 
+app.get('/api/mobs/get/:name', async (req,res) => {
+    const result = await sqlQuery.sqlQuery(`SELECT * FROM mobs WHERE name = '${req.params.name.replaceAll('+', ' ').replaceAll("'", "\\'")}'`)
+    res.json(result[0])
+})
+
 app.post('/api/mobs/add', async (req,res) => {
     console.log('oui')
     let selected = req.body

@@ -17,6 +17,11 @@ app.get('/api/armors/get', async (req,res) => {
     res.json(data)
 })
 
+app.get('/api/armors/get/:name', async (req,res) => {
+    const result = await sqlQuery.sqlQuery(`SELECT * FROM armors WHERE name = '${req.params.name.replaceAll('+', ' ').replaceAll("'", "\\'")}'`)
+    res.json(result[0])
+})
+
 app.get('/api/armors/get/:id', async (req,res) => {
     const result = await sqlQuery.sqlQuery(`SELECT * FROM armors WHERE id = ${req.params.id}`)
     res.json(result[0])
