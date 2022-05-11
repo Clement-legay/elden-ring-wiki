@@ -22,23 +22,26 @@
 import {mdiMagnify} from "@mdi/js";
 
 export default {
-  name: 'Home',
-  data() {
-    return {
-      icon: {
-        magnify: mdiMagnify
-      },
-      search: ''
-    }
-  },
-  methods: {
-    searchIt(search) {
-      this.$store.dispatch('setOthers', search);
-      this.$store.dispatch('setSelected', 'others');
-      this.$router.push('/content');
+    name: 'Home',
+    data() {
+        return {
+            icon: {
+                magnify: mdiMagnify
+            },
+            search: ''
+        }
+    },
+    methods: {
+        searchIt(search) {
+            this.$store.dispatch('setOthers', search);
+            this.$store.dispatch('setSelected', 'others');
+            this.$router.push('/content');
 
+        }
+    },
+    mounted() {
+        document.title = 'Home';
     }
-  }
 }
 </script>
 

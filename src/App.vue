@@ -9,6 +9,7 @@
 <script>
 import Header from "@/components/HeaderBackground";
 import BackToTop from "@/components/backToTop";
+import Vue from "vue";
 
 export default {
   name: 'App',
@@ -17,7 +18,9 @@ export default {
     Header
   },
   mounted() {
-    this.$store.dispatch('setEverybody');
+    if (Vue.$cookies.get('user')) {
+        this.$store.dispatch('checkToken', { token: Vue.$cookies.get('user')});
+    }
   }
 };
 </script>

@@ -8,7 +8,7 @@
     <v-card-text>
       <v-row justify="center">
         <v-col cols="6">
-          <v-img :src="item.image"></v-img>
+          <v-img :src="'http://192.168.1.23:3000' + item.img"></v-img>
         </v-col>
       </v-row>
       <v-row justify="center" align="center" v-if="armorIcon !== null">
@@ -23,7 +23,7 @@
       <v-row justify="center">
         <v-col cols="12" md="8">
           <p class="desc_item">
-            {{item.description}}
+            {{item.desc}}
             <span v-if="item.description !== undefined && item.description !== null && item.effect !== undefined && item.effect !== null">
             <br/>
             <br/>

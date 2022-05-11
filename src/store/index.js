@@ -21,8 +21,10 @@ export default new Vuex.Store({
       incantations: [],
       ashesWar: [],
       spirits: [],
+      locations: [],
     },
     opened: false,
+    user: undefined
   },
   getters: {
     getTalismans: state => state.allItems.talismans,
@@ -40,6 +42,8 @@ export default new Vuex.Store({
     getIncantations: state => state.allItems.incantations,
     getAshesWar: state => state.allItems.ashesWar,
     getSpirits: state => state.allItems.spirits,
+    getLocations: state => state.allItems.locations,
+    getUser: state => state.user
   },
   mutations: {
     setSelected: (state, payload) => {
@@ -60,7 +64,7 @@ export default new Vuex.Store({
     setMobs: (state, payload) => {
       state.allItems.mobs = payload
     },
-    setBoss: (state, payload) => {
+    setBosses: (state, payload) => {
       state.allItems.boss = payload
     },
     setOthers: (state, payload) => {
@@ -87,40 +91,61 @@ export default new Vuex.Store({
     setSpirits: (state, payload) => {
       state.allItems.spirits = payload
     },
+    setLocations: (state, payload) => {
+      state.allItems.locations = payload
+    },
+    setUser: (state, payload) => {
+      state.user = payload
+    }
   },
   actions: {
-    async setEverybody(state) {
+    async getLogin(state, payload) {
+      const result = await axios.post('http://192.168.1.23:3000/api/user/login', payload)
+      return result.data
+    },
+    async getRegister(state, payload) {
+      const result = await axios.post('http://192.168.1.23:3000/api/user/register', payload)
+      return result.data
+    },
+    disconnect(state) {
+      state.commit('setUser', undefined)
+      Vue.$cookies.remove('user')
+    },
+    async getPreciseItem(state, payload) {
+      const result = await axios.get(`http://192.168.1.23:3000/api/${payload.path}/get/${payload.name}`)
+      return result.data
+    },
+    login(state, payload) {
+      Vue.$cookies.set('user', payload)
+      state.commit('setUser', payload)
+    },
+    async checkToken(state, payload) {
+      const result = await axios.post('http://192.168.1.23:3000/api/user/checkToken', payload)
+      if (await result.data.status === 'success') {
+        state.commit('setUser', payload.token)
+      } else {
+        Vue.$cookies.remove('user')
+      }
+    },
+    async setEverybody(state, payload) {
       const setGeneral = async (path) => {
-        const result = (await axios.get('https://eldenring.fanapis.com/api/' + path + '?limit=100'))
+        const result = (await axios.get(`http://192.168.1.23:3000/api/${path}/get`, { params: { limit: 100, page: 0 } }))
+
         let items = result.data.data
         let count = result.data.count
         let page = 1
         while (count === 100) {
-          const pages = (await axios.get('https://eldenring.fanapis.com/api/' + path + '?limit=100&page=' + page))
+          const pages = (await axios.get('http://192.168.1.23:3000/api/' + path + '/get', { params: { limit: 100, page: page } }))
           items = items.concat(pages.data.data)
           count = pages.data.count
           page++
         }
 
-        if (path === 'armors') {
-          items.find(armor => armor.category === "Gauntlet").category = "Gauntlets"
-        } else if (path === 'shields') {
-          items.find(weapon => weapon.category === "Small Shields").category = "Small Shield"
-        }
         return items
       }
-      state.commit('setTalismans', await setGeneral('talismans'))
-      state.commit('setSorceries', await setGeneral('sorceries'))
-      state.commit('setArmors', await setGeneral('armors'))
-      state.commit('setMobs', await setGeneral('creatures'))
-      state.commit('setBoss', await setGeneral('bosses'))
-      state.commit('setItems', await setGeneral('items'))
-      state.commit('setNPCs', await setGeneral('npcs'))
-      state.commit('setWeapons', await setGeneral('weapons'))
-      state.commit('setShields', await setGeneral('shields'))
-      state.commit('setIncantations', await setGeneral('incantations'))
-      state.commit('setAshesWar', await setGeneral('ashes'))
-      state.commit('setSpirits', await setGeneral('spirits'))
+
+
+      state.commit(`set${payload.path.charAt(0).toUpperCase() + payload.path.slice(1)}`, setGeneral(payload.path))
     },
     setOthers(state, search) {
       let result = [];
@@ -144,6 +169,7 @@ export default new Vuex.Store({
     setOpened(state, payload) {
       state.commit('setOpened', payload)
     },
+
   },
   modules: {
   }
